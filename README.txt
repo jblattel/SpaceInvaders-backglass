@@ -2,7 +2,7 @@ Space Invaders Backglass Clock Project
 Overview
 This repository contains the code and resources for a "new and improved" Space Invaders themed backglass clock project. Inspired by the classic arcade game, this project turns a backglass-style display into a functional clock, blending retro gaming aesthetics with modern timekeeping.
 
-The project likely involves hardware like LED matrices, microcontrollers (e.g., Arduino or ESP32), and software to animate invaders or display time in a creative way mimicking the Space Invaders backglass.
+The project utilizes a Raspberry pi to drive 7 segment displays and 8x8 matrixes to create a clock that has animation lights and sounds , microcontrollers. Software to animate invaders or display time in a creative way mimicking the Space Invaders backglass.
 
 Features
 Retro Space Invaders theme
