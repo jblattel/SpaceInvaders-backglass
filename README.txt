@@ -13,15 +13,9 @@ Requirements
 Hardware: [Raspberry PI 2x 8x8 Matrix displays, 4x 7 segment displays, 32 channel I/O driver for lighting]
 Software: Python 3 and libraries outlined in import
 Build: (more to come on physical build)
+
 Installation
 Clone the repository:
-text
-
-Collapse
-
-Wrap
-
-Copy
 git clone https://github.com/jblattel/SpaceInvaders-backglass.git
 Open the project in your IDE (e.g., Arduino IDE).
 Install any required libraries via the Library Manager.
