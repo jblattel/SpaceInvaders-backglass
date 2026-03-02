@@ -59,19 +59,40 @@ display_lower_left = BigSeg7x4(i2c, address=0x71)
 MATRIX1_ADDR = 0x76
 MATRIX2_ADDR = 0x77
 
-# Initialize 8x8 matrices using Adafruit library
-time.sleep(1)  # Wait for I2C bus stability
+# Initialize 8x8 matrices - PROPER HT16K33 INIT SEQUENCE
+# The HT16K33 requires explicit oscillator enable and display on commands
+# before it will respond to display data writes
+time.sleep(0.5)  # Wait for I2C bus stability
+
+def init_ht16k33(addr, brightness=15):
+    """
+    Initialize HT16K33 LED matrix driver.
+    Args:
+        addr: I2C address of the matrix
+        brightness: 0-15 (default 15 = max)
+    """
+    try:
+        bus.write_byte(addr, 0x21)  # System oscillator ON (required first!)
+        time.sleep(0.01)  # Brief delay for oscillator startup
+        bus.write_byte(addr, 0x81)  # Display ON, blinking OFF
+        bus.write_byte(addr, 0xE0 | (brightness & 0x0F))  # Set brightness
+        bus.write_i2c_block_data(addr, 0x00, [0x00] * 16)  # Clear display RAM
+        print(f"Matrix {hex(addr)} initialized successfully")
+        return True
+    except Exception as e:
+        print(f"Matrix {hex(addr)} initialization error: {e}")
+        return False
+
+# Initialize both matrices
+for addr in [MATRIX1_ADDR, MATRIX2_ADDR]:
+    init_ht16k33(addr, brightness=8)  # brightness 8 = ~50%
+
+# Create Adafruit matrix objects (optional - for compatibility if needed elsewhere)
 try:
     matrix1 = matrix.Matrix8x8(i2c, address=MATRIX1_ADDR)
     matrix2 = matrix.Matrix8x8(i2c, address=MATRIX2_ADDR)
-    matrix1.fill(0)
-    matrix2.fill(0)
-    matrix1.brightness = 0.5
-    matrix2.brightness = 0.5
-    matrix1.show()
-    matrix2.show()
 except Exception as e:
-    print(f"Matrix initialization error: {e}")
+    print(f"Adafruit matrix object creation error: {e}")
 
 # MCP1 Channels (Perimeter)
 channel_0 = 0xFFFE
